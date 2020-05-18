@@ -6,6 +6,8 @@ using ServiceX;
 using Newtonsoft.Json;
 using System.IO;
 using System.Net;
+using Microsoft.Maps.MapControl.WPF;
+using System.Text;
 
 namespace ServiceY
 {
@@ -124,6 +126,42 @@ namespace ServiceY
             uri_string += reformatData(dep_lat) + "%2C" + reformatData(dep_lng) + "%3B";
             uri_string += reformatData(arr_lat) + "%2C" + reformatData(arr_lng);
             return uri_string;
+        }
+
+        public LocationCollection getSegmentCoordinateList(
+            double dep_lat, double dep_lng,
+            double arr_lat, double arr_lng,
+            string transportation_way)
+        {
+            transportation_way = "cycling-regular";
+            string uri_string = $"https://api.openrouteservice.org/v2/directions/{transportation_way}/geojson?api_key={API_KEY}";
+            WebRequest request = WebRequest.Create(uri_string);
+            /*
+             {"coordinates":[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]],"instructions":"false","maneuvers":"true"}
+             */
+            string postData = "{" +
+                "\"coordinates\":["
+                    + "[" + reformatData(dep_lat) + "," + reformatData(dep_lng) + "],"
+                    + "[" + reformatData(arr_lat) + "," + reformatData(arr_lng) + "]"
+                    + "]," 
+                    + "\"instructions\":\"false\","
+                    + "\"maneuvers\":\"true\""
+                    +"}";
+            byte[] data = Encoding.ASCII.GetBytes(postData);
+            request.Method = "POST";
+            request.ContentType = "application/json";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+            
+            response = request.GetResponse();
+            string responseFromServer = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            ResponseORS responseJSON = JsonConvert.DeserializeObject<ResponseORS>(responseFromServer);
+
+            return null;
         }
 
         public String GetStation(String station)

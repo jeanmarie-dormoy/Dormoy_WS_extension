@@ -7,6 +7,8 @@ using ServiceX;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
+using Microsoft.Maps.MapControl.WPF;
+
 
 namespace WindowsFormsClient
 {
@@ -24,15 +26,15 @@ namespace WindowsFormsClient
         List<VelibStation> stations;
         VelibStation stationDepart, stationArrivee;
 
-        private string uri_string;        private Boolean segment1, segment2, segment3;
+        private string uri_string;        
+        private Boolean segment1, segment2, segment3;
         VelibStation nearestStationDepart, nearestStationArrivee;
         Position posDepart, posArrivee;
-
-        
-
+        MainWindow mainWin;
+            
+              
         public Form1()
         {
-            
             InitializeComponent();
             textBoxDebug.Visible = false;
             labelAide.Visible = false;
@@ -40,6 +42,21 @@ namespace WindowsFormsClient
             List<Contract> cList = req.getContracts();
             foreach (Contract c in cList)
                 comboboxVille.Items.Add(c.name);
+            mainWin = MainWindow.getInstance();
+            bingMapElement.Child = mainWin;
+
+            var locationList = new LocationCollection
+            {
+                new Location(43.569781, 1.467381),
+                new Location(43.607265, 1.439456)
+            };
+
+            //[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]
+            req.getSegmentCoordinateList(8.681495, 49.41461, 8.687872, 49.420318, "");
+            mainWin.BuildSegment(locationList);
+            
+
+            
 
             // testREST();  //if you want to test some REST GET/POST methods
             // testPOST();
@@ -48,10 +65,12 @@ namespace WindowsFormsClient
             // req.refreshStationList("rouen");
             // textBoxAdresseDepart.Text = "place du vieux marché";
             // textBoxAdresseArrivee.Text = "2 rue de lessard";
+            
+            /*
             button1.Visible = false;
             button2.Visible = false;
             button3.Visible = false;
-            webBrowserMap.Visible = false;
+            webBrowserMap.Visible = false; */
         }
 
         
@@ -70,10 +89,11 @@ namespace WindowsFormsClient
                 nearestStationArrivee = req.computeNearestStation(posArrivee);
                 if (nearestStationDepart != null && nearestStationArrivee != null)
                 {
+                    /*
                     button1.Visible = true;
                     button2.Visible = true;
                     button3.Visible = true;
-                    webBrowserMap.Visible = true;
+                    webBrowserMap.Visible = true;*/
                     segment1 = segment2 = segment3 = false;
                     segment1 = true;
 
@@ -83,11 +103,12 @@ namespace WindowsFormsClient
                         "foot");
                     labelInfos.Text = uri_string;
                     textBoxDebug.Text = uri_string;
+                    /*
                     webBrowserMap.Url = new Uri(uri_string);
                     webBrowserMap.Update();
 
                     
-                    webBrowserMap.Navigate(uri_string);
+                    webBrowserMap.Navigate(uri_string); */
                 } else
                 {
                     labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
@@ -131,8 +152,9 @@ namespace WindowsFormsClient
                         "foot");
                     labelInfos.Text = uri_string;
                     textBoxDebug.Text = uri_string;
+                    /*
                     webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update();
+                    webBrowserMap.Update(); */
                 }
                 else
                 {
@@ -168,8 +190,9 @@ namespace WindowsFormsClient
                         "bike");
                     labelInfos.Text = uri_string;
                     textBoxDebug.Text = uri_string;
+                    /*
                     webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update();
+                    webBrowserMap.Update(); */
                 }
                 else
                 {
@@ -193,8 +216,9 @@ namespace WindowsFormsClient
                         "foot");
                     labelInfos.Text = uri_string;
                     textBoxDebug.Text = uri_string;
+                    /*
                     webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update();
+                    webBrowserMap.Update(); */
                 }
                 else
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ServiceX;
 using System.ServiceModel;
 using System.ServiceModel.Web;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace ServiceY
 {
@@ -54,6 +55,15 @@ namespace ServiceY
                     ResponseFormat = WebMessageFormat.Json,
                     BodyStyle = WebMessageBodyStyle.Wrapped)]
         String getURIOfSegment(
+            double dep_lat, double dep_lng,
+            double arr_lat, double arr_lng,
+            string transportation_way);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "getSegmentCoordinateList?dep_lat={dep_lat}&dep_lng={dep_lng}&arr_lat={arr_lat}&arr_lng={arr_lng}&transporation_way={transportation_way}",
+                    ResponseFormat = WebMessageFormat.Json,
+                    BodyStyle = WebMessageBodyStyle.Wrapped)]
+        LocationCollection getSegmentCoordinateList(
             double dep_lat, double dep_lng,
             double arr_lat, double arr_lng,
             string transportation_way);

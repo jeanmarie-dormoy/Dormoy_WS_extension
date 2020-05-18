@@ -32,18 +32,16 @@
             this.comboboxVille = new System.Windows.Forms.ComboBox();
             this.labelVille = new System.Windows.Forms.Label();
             this.labelInfos = new System.Windows.Forms.Label();
-            this.webBrowserMap = new System.Windows.Forms.WebBrowser();
             this.labelAdresseDepart = new System.Windows.Forms.Label();
             this.textBoxAdresseDepart = new System.Windows.Forms.TextBox();
             this.buttonCalcul = new System.Windows.Forms.Button();
             this.textBoxAdresseArrivee = new System.Windows.Forms.TextBox();
             this.labelAdresseArrivee = new System.Windows.Forms.Label();
             this.textBoxDebug = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
             this.labelAide = new System.Windows.Forms.Label();
             this.buttonAide = new System.Windows.Forms.Button();
+            this.bingMapElement = new System.Windows.Forms.Integration.ElementHost();
+            this.mainWindow1 = new WindowsFormsClient.MainWindow();
             this.SuspendLayout();
             // 
             // comboboxVille
@@ -72,14 +70,6 @@
             this.labelInfos.Size = new System.Drawing.Size(38, 17);
             this.labelInfos.TabIndex = 5;
             this.labelInfos.Text = "Infos";
-            // 
-            // webBrowserMap
-            // 
-            this.webBrowserMap.Location = new System.Drawing.Point(44, 383);
-            this.webBrowserMap.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowserMap.Name = "webBrowserMap";
-            this.webBrowserMap.Size = new System.Drawing.Size(1868, 558);
-            this.webBrowserMap.TabIndex = 8;
             // 
             // labelAdresseDepart
             // 
@@ -130,36 +120,6 @@
             this.textBoxDebug.Size = new System.Drawing.Size(275, 22);
             this.textBoxDebug.TabIndex = 14;
             // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(154, 345);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(142, 23);
-            this.button1.TabIndex = 15;
-            this.button1.Text = "Trajet Pédestre 1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(470, 345);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(124, 23);
-            this.button2.TabIndex = 16;
-            this.button2.Text = "Trajet en Vélo";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(767, 345);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(147, 23);
-            this.button3.TabIndex = 17;
-            this.button3.Text = "Trajet Pédestre 2";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // labelAide
             // 
             this.labelAide.AutoSize = true;
@@ -179,23 +139,29 @@
             this.buttonAide.UseVisualStyleBackColor = true;
             this.buttonAide.Click += new System.EventHandler(this.buttonAide_Click);
             // 
+            // bingMapElement
+            // 
+            this.bingMapElement.Location = new System.Drawing.Point(44, 407);
+            this.bingMapElement.Name = "bingMapElement";
+            this.bingMapElement.Size = new System.Drawing.Size(1859, 605);
+            this.bingMapElement.TabIndex = 20;
+            this.bingMapElement.Text = "elementHost1";
+            this.bingMapElement.Child = this.mainWindow1;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1924, 970);
+            this.ClientSize = new System.Drawing.Size(1924, 1055);
+            this.Controls.Add(this.bingMapElement);
             this.Controls.Add(this.buttonAide);
             this.Controls.Add(this.labelAide);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.textBoxDebug);
             this.Controls.Add(this.textBoxAdresseArrivee);
             this.Controls.Add(this.labelAdresseArrivee);
             this.Controls.Add(this.buttonCalcul);
             this.Controls.Add(this.textBoxAdresseDepart);
             this.Controls.Add(this.labelAdresseDepart);
-            this.Controls.Add(this.webBrowserMap);
             this.Controls.Add(this.labelInfos);
             this.Controls.Add(this.labelVille);
             this.Controls.Add(this.comboboxVille);
@@ -211,18 +177,16 @@
         private System.Windows.Forms.ComboBox comboboxVille;
         private System.Windows.Forms.Label labelVille;
         private System.Windows.Forms.Label labelInfos;
-        private System.Windows.Forms.WebBrowser webBrowserMap;
         private System.Windows.Forms.Label labelAdresseDepart;
         private System.Windows.Forms.TextBox textBoxAdresseDepart;
         private System.Windows.Forms.Button buttonCalcul;
         private System.Windows.Forms.TextBox textBoxAdresseArrivee;
         private System.Windows.Forms.Label labelAdresseArrivee;
         private System.Windows.Forms.TextBox textBoxDebug;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label labelAide;
         private System.Windows.Forms.Button buttonAide;
+        private System.Windows.Forms.Integration.ElementHost bingMapElement;
+        private MainWindow mainWindow1;
     }
 }
 
