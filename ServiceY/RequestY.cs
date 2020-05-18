@@ -47,7 +47,7 @@ namespace ServiceY
             return reqX.getAllStations();
         }
 
-        public Position geocodingAddress(String location)
+        public Location geocodingAddress(String location)
         {
             RootJSON answerJSON;
             double[] bbox;
@@ -80,7 +80,8 @@ namespace ServiceY
             position = new Position();
             position.lng = bbox[0];
             position.lat = bbox[1];
-            return position;
+
+            return new Location(position.lat, position.lng);
         }
 
         private double GetDistance(double x1, double y1, double x2, double y2)
@@ -88,15 +89,15 @@ namespace ServiceY
             return Math.Sqrt(Math.Pow((x2 - x1), 2) + Math.Pow((y2 - y1), 2));
         }
 
-        public VelibStation computeNearestStation(Position pos)
+        public VelibStation computeNearestStation(Location pos)
         {
             Dictionary<VelibStation, Double> dict = new Dictionary<VelibStation, double>();
             Dictionary<VelibStation, Double> sortedDict;
             foreach (VelibStation station in stationList)
             {
                 dict[station] = GetDistance(
-                    pos.lat,
-                    pos.lng,
+                    pos.Latitude,
+                    pos.Longitude,
                     station.position.lat,
                     station.position.lng);
             }
@@ -129,11 +130,11 @@ namespace ServiceY
         }
 
         public LocationCollection getSegmentCoordinateList(
-            double dep_lat, double dep_lng,
-            double arr_lat, double arr_lng,
+            Location dep,
+            Location arr,
             string transportation_way)
         {
-            transportation_way = "cycling-regular";
+            //transportation_way = "cycling-regular";
             string uri_string = $"https://api.openrouteservice.org/v2/directions/{transportation_way}/geojson?api_key={API_KEY}";
             WebRequest request = WebRequest.Create(uri_string);
             /*
@@ -141,8 +142,8 @@ namespace ServiceY
              */
             string postData = "{" +
                 "\"coordinates\":["
-                    + "[" + reformatData(dep_lat) + "," + reformatData(dep_lng) + "],"
-                    + "[" + reformatData(arr_lat) + "," + reformatData(arr_lng) + "]"
+                    + "[" + reformatData(dep.Longitude) + "," + reformatData(dep.Latitude) + "],"
+                    + "[" + reformatData(arr.Longitude) + "," + reformatData(arr.Latitude) + "]"
                     + "]," 
                     + "\"instructions\":\"false\","
                     + "\"maneuvers\":\"true\""

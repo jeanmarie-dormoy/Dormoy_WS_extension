@@ -12,7 +12,6 @@ C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\bin\Debug\Se
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\bin\Debug\ServiceX.pdb
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\bin\Debug\Newtonsoft.Json.dll
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\bin\Debug\Newtonsoft.Json.xml
-C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\obj\Debug\ServiceX.csprojAssemblyReference.cache
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\obj\Debug\ServiceX.csproj.CopyComplete
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\obj\Debug\ServiceX.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceX\obj\Debug\ServiceX.pdb

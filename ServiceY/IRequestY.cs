@@ -39,7 +39,7 @@ namespace ServiceY
         [WebGet(UriTemplate = "geocoding/{location}",
             ResponseFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Wrapped)]
-        Position geocodingAddress(String location);
+        Location geocodingAddress(String location);
 
         [OperationContract]
         [WebInvoke(
@@ -48,7 +48,7 @@ namespace ServiceY
             ResponseFormat = WebMessageFormat.Json,
             RequestFormat = WebMessageFormat.Json,
             BodyStyle = WebMessageBodyStyle.Bare)]
-        VelibStation computeNearestStation(Position pos);
+        VelibStation computeNearestStation(Location pos);
 
         [OperationContract]
         [WebGet(UriTemplate = "uriOfSegment?dep_lat={dep_lat}&dep_lng={dep_lng}&arr_lat={arr_lat}&arr_lng={arr_lng}&transporation_way={transportation_way}",
@@ -59,13 +59,17 @@ namespace ServiceY
             double arr_lat, double arr_lng,
             string transportation_way);
 
+        //TODO: tester ça en get si temps
         [OperationContract]
-        [WebGet(UriTemplate = "getSegmentCoordinateList?dep_lat={dep_lat}&dep_lng={dep_lng}&arr_lat={arr_lat}&arr_lng={arr_lng}&transporation_way={transportation_way}",
-                    ResponseFormat = WebMessageFormat.Json,
-                    BodyStyle = WebMessageBodyStyle.Wrapped)]
+        [WebInvoke(
+            Method = "GET",
+            UriTemplate = "getSegmentCoordinateList?depart={dep}&arrivee={arr}&transporation_way={transportation_way}",
+            ResponseFormat = WebMessageFormat.Json,
+            RequestFormat = WebMessageFormat.Json,
+            BodyStyle = WebMessageBodyStyle.Wrapped)]
         LocationCollection getSegmentCoordinateList(
-            double dep_lat, double dep_lng,
-            double arr_lat, double arr_lng,
+            Location dep,
+            Location arr,
             string transportation_way);
     }
 }

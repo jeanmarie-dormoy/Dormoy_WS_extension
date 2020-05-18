@@ -24,15 +24,12 @@ namespace WindowsFormsClient
         }
         RequestY req;
         List<VelibStation> stations;
-        VelibStation stationDepart, stationArrivee;
-
-        private string uri_string;        
-        private Boolean segment1, segment2, segment3;
+        Location nearestStationDepartLocation, nearestStationArriveeLocation;
         VelibStation nearestStationDepart, nearestStationArrivee;
-        Position posDepart, posArrivee;
+        Location posDepart, posArrivee;
         MainWindow mainWin;
-            
-              
+        LocationCollection locationList;
+
         public Form1()
         {
             InitializeComponent();
@@ -45,22 +42,11 @@ namespace WindowsFormsClient
             mainWin = MainWindow.getInstance();
             bingMapElement.Child = mainWin;
 
-            LocationCollection locationList = new LocationCollection
+            locationList = new LocationCollection
             {
                 new Location(43.569781, 1.467381),
                 new Location(43.607265, 1.439456)
-            };
-
-            //[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]
-            locationList = req.getSegmentCoordinateList(8.681495, 49.41461, 8.687872, 49.420318, "");
-            mainWin.BuildSegment(locationList);
-            mainWin.BuildPushPin(new LocationCollection {
-                new Location(49.41461, 8.681495),
-                new Location(49.420318, 8.687872)
-            });
-            
-
-            
+            };    
 
             // testREST();  //if you want to test some REST GET/POST methods
             // testPOST();
@@ -69,50 +55,49 @@ namespace WindowsFormsClient
             // req.refreshStationList("rouen");
             // textBoxAdresseDepart.Text = "place du vieux marché";
             // textBoxAdresseArrivee.Text = "2 rue de lessard";
-            
-            /*
-            button1.Visible = false;
-            button2.Visible = false;
-            button3.Visible = false;
-            webBrowserMap.Visible = false; */
         }
 
         
 
         private void buttonCalcul_Click(object sender, EventArgs e)
         {
-            string adresseDepart = textBoxAdresseDepart.Text,
-                adresseArrivee = textBoxAdresseArrivee.Text;
+            string adresseDepart = textBoxAdresseDepart.Text;
+            string adresseArrivee = textBoxAdresseArrivee.Text;
             posDepart = req.geocodingAddress(adresseDepart);
             posArrivee = req.geocodingAddress(adresseArrivee);
             
-
             if (posDepart != null && posArrivee != null)
             {
                 nearestStationDepart = req.computeNearestStation(posDepart);
                 nearestStationArrivee = req.computeNearestStation(posArrivee);
                 if (nearestStationDepart != null && nearestStationArrivee != null)
                 {
-                    /*
-                    button1.Visible = true;
-                    button2.Visible = true;
-                    button3.Visible = true;
-                    webBrowserMap.Visible = true;*/
-                    segment1 = segment2 = segment3 = false;
-                    segment1 = true;
+                    labelInfos.Text = "OK:\tAdresse(s) de départ et d'arrivée localisées\n";
+                    nearestStationDepartLocation = new Location(
+                        nearestStationDepart.position.lat, nearestStationDepart.position.lng);
+                    nearestStationArriveeLocation = new Location(
+                        nearestStationArrivee.position.lat, nearestStationArrivee.position.lng);
 
-                    uri_string = req.getURIOfSegment(
-                        posDepart.lat, posDepart.lng,
-                        nearestStationDepart.position.lat, nearestStationDepart.position.lng,
-                        "foot");
-                    labelInfos.Text = uri_string;
-                    textBoxDebug.Text = uri_string;
-                    /*
-                    webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update();
-
+                    locationList = req.getSegmentCoordinateList(
+                        posDepart,
+                        nearestStationDepartLocation,
+                        "foot-walking");
+                    mainWin.BuildSegment(locationList);
                     
-                    webBrowserMap.Navigate(uri_string); */
+                    locationList = req.getSegmentCoordinateList(
+                        nearestStationDepartLocation, nearestStationArriveeLocation, 
+                        "cycling-regular");
+                    mainWin.BuildSegment(locationList);
+
+                    locationList = req.getSegmentCoordinateList(
+                        nearestStationArriveeLocation, posArrivee,
+                        "foot-walking");
+                    mainWin.BuildSegment(locationList);
+
+                    mainWin.BuildPushPin(new LocationCollection() {
+                        posDepart, nearestStationDepartLocation, nearestStationArriveeLocation, posArrivee
+                    });
+                    mainWin.CenterMap(posDepart, posArrivee);                        
                 } else
                 {
                     labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
@@ -141,31 +126,6 @@ namespace WindowsFormsClient
             labelInfos.Text = "Liste des stations bien récupérée.\n";
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (segment1 == false)
-            {
-                if (nearestStationArrivee != null && posArrivee != null)
-                {
-                    segment1 = segment2 = segment3 = false;
-                    segment1 = true;
-
-                    uri_string = req.getURIOfSegment(
-                        posDepart.lat, posDepart.lng,
-                        nearestStationDepart.position.lat, nearestStationDepart.position.lng,
-                        "foot");
-                    labelInfos.Text = uri_string;
-                    textBoxDebug.Text = uri_string;
-                    /*
-                    webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update(); */
-                }
-                else
-                {
-                    labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
-                }
-            }
-        }
 
         private void buttonAide_Click(object sender, EventArgs e)
         {
@@ -177,58 +137,6 @@ namespace WindowsFormsClient
                 + "4.  l'application affiche par défaut le premier segment pédestre de l'itinéraire\n"
                 + "    vous pouvez cliquez sur les boutons correspondant pour visualiser chacun des\n"
                 + "    segments de l'itinéraire";
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            if (segment2 == false)
-            {
-                if (nearestStationDepart != null && nearestStationArrivee != null)
-                {
-                    segment1 = segment2 = segment3 = false;
-                    segment2 = true;
-
-                    uri_string = req.getURIOfSegment(
-                        nearestStationDepart.position.lat, nearestStationDepart.position.lng,
-                        nearestStationArrivee.position.lat, nearestStationArrivee.position.lng,
-                        "bike");
-                    labelInfos.Text = uri_string;
-                    textBoxDebug.Text = uri_string;
-                    /*
-                    webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update(); */
-                }
-                else
-                {
-                    labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
-                }
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            if (segment3 == false)
-            {
-                if (nearestStationArrivee != null && posArrivee != null)
-                {
-                    segment1 = segment2 = segment3 = false;
-                    segment3 = true;
-
-                    uri_string = req.getURIOfSegment(
-                        nearestStationArrivee.position.lat, nearestStationArrivee.position.lng,
-                        posArrivee.lat, posArrivee.lng,
-                        "foot");
-                    labelInfos.Text = uri_string;
-                    textBoxDebug.Text = uri_string;
-                    /*
-                    webBrowserMap.Url = new Uri(uri_string);
-                    webBrowserMap.Update(); */
-                }
-                else
-                {
-                    labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
-                }
-            }
         }
 
         private VelibStation getStationWithName(string name)
@@ -294,3 +202,12 @@ namespace WindowsFormsClient
         }
     }
 }
+
+//[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]
+//locationList = req.getSegmentCoordinateList(8.681495, 49.41461, 8.687872, 49.420318, "");
+/*
+mainWin.BuildSegment(locationList);
+mainWin.BuildPushPin(new LocationCollection {
+    new Location(49.41461, 8.681495),
+    new Location(49.420318, 8.687872)
+}); */
