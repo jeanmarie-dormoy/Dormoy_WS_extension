@@ -45,15 +45,19 @@ namespace WindowsFormsClient
             mainWin = MainWindow.getInstance();
             bingMapElement.Child = mainWin;
 
-            var locationList = new LocationCollection
+            LocationCollection locationList = new LocationCollection
             {
                 new Location(43.569781, 1.467381),
                 new Location(43.607265, 1.439456)
             };
 
             //[[8.681495,49.41461],[8.686507,49.41943],[8.687872,49.420318]]
-            req.getSegmentCoordinateList(8.681495, 49.41461, 8.687872, 49.420318, "");
+            locationList = req.getSegmentCoordinateList(8.681495, 49.41461, 8.687872, 49.420318, "");
             mainWin.BuildSegment(locationList);
+            mainWin.BuildPushPin(new LocationCollection {
+                new Location(49.41461, 8.681495),
+                new Location(49.420318, 8.687872)
+            });
             
 
             

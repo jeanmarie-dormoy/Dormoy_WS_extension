@@ -161,7 +161,21 @@ namespace ServiceY
             string responseFromServer = new StreamReader(response.GetResponseStream()).ReadToEnd();
             ResponseORS responseJSON = JsonConvert.DeserializeObject<ResponseORS>(responseFromServer);
 
-            return null;
+            if (responseJSON == null || responseJSON.Features[0].Geometry.Coordinates == null
+                || responseJSON.Features[0].Geometry.Coordinates.Length == 0)
+                return null;
+            
+            double[][] arrayOfCoordinates = responseJSON.Features[0].Geometry.Coordinates;
+            LocationCollection res = new LocationCollection();
+            for (int i = 0; i < arrayOfCoordinates.Length; ++i)
+            {
+                if (arrayOfCoordinates[i] != null && arrayOfCoordinates[i].Length == 2)
+                {
+                    res.Add(new Location(arrayOfCoordinates[i][1], arrayOfCoordinates[i][0]));
+                }
+            }
+
+            return res;
         }
 
         public String GetStation(String station)

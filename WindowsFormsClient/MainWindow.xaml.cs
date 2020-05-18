@@ -37,15 +37,16 @@ namespace WindowsFormsClient
             InitializeComponent();
         }
 
-        public void BuildSegment(LocationCollection locationList)
+        public void BuildPushPin(LocationCollection locationList)
         {
-
             int i = 1;
+            double sum_lat = 0;
+            double sum_lng = 0;
             foreach (var location in locationList)
             {
                 Pushpin pushpin = new Pushpin()
                 {
-                    
+
                     Content = i.ToString(),
                     Background = new SolidColorBrush(Color.FromArgb(100, 100, 100, (byte)i))
                 };
@@ -54,6 +55,27 @@ namespace WindowsFormsClient
                 i++;
             }
 
+            int last = locationList.Count -1;
+            Location middle = new Location(
+                (locationList[0].Latitude + locationList[last].Latitude) / 2,
+                (locationList[0].Longitude + locationList[last].Longitude) / 2);
+
+            /* DEBUG
+            Pushpin pushpin1 = new Pushpin()
+            {
+                Content = "M",
+                Background = new SolidColorBrush(Color.FromArgb(100, 100, 100, (byte)4))
+            };
+            MapLayer.SetPosition(pushpin1, middle);
+            _instance.bingMap.Children.Add(pushpin1);
+            */
+
+            _instance.bingMap.Center = middle;
+            _instance.bingMap.ZoomLevel = 15;
+        }
+
+        public void BuildSegment(LocationCollection locationList)
+        {
             MapPolyline polyline = new MapPolyline();
             polyline.Stroke = new SolidColorBrush(Colors.Blue);
             polyline.StrokeThickness = 5;
