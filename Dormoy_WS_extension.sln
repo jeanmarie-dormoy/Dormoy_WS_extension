@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClientTest", "Consol
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsFormsClient", "WindowsFormsClient\WindowsFormsClient.csproj", "{A4E18626-A3FE-4E34-B608-0699AA2118A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceTourism", "ServiceTourism\ServiceTourism.csproj", "{CC0CB4B5-8B5A-4EA3-BEB0-C251F647B817}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{A4E18626-A3FE-4E34-B608-0699AA2118A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4E18626-A3FE-4E34-B608-0699AA2118A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4E18626-A3FE-4E34-B608-0699AA2118A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC0CB4B5-8B5A-4EA3-BEB0-C251F647B817}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC0CB4B5-8B5A-4EA3-BEB0-C251F647B817}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC0CB4B5-8B5A-4EA3-BEB0-C251F647B817}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC0CB4B5-8B5A-4EA3-BEB0-C251F647B817}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

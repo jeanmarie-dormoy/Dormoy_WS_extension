@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Forms;
 using ServiceY;
 using ServiceX;
+using ServiceTourism;
 using System.Net;
 using System.IO;
 using Newtonsoft.Json;
@@ -23,6 +24,7 @@ namespace WindowsFormsClient
             }
         }
         RequestY req;
+        RequestT reqTourism;
         List<VelibStation> stations;
         Location nearestStationDepartLocation, nearestStationArriveeLocation;
         VelibStation nearestStationDepart, nearestStationArrivee;
@@ -37,6 +39,7 @@ namespace WindowsFormsClient
             textBoxDebug.Visible = false;
             labelAide.Visible = false;
             req = new RequestY();
+            reqTourism = new RequestT();
             List<Contract> cList = req.getContracts();
             foreach (Contract c in cList)
                 comboboxVille.Items.Add(c.name);
@@ -138,6 +141,8 @@ namespace WindowsFormsClient
                 new Location(north_lat, west_lng)
             };
             mainWin.BuildDebugPolygon(testPolygon);
+            List<Place> placeList = reqTourism.getTourismPlaceList(west_lng, south_lat, east_lng, north_lat);
+            var hello = "coucou";
         }
 
         private void comboboxVille_SelectedIndexChanged(object sender, EventArgs e)

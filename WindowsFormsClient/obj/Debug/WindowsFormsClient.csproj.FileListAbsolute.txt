@@ -41,3 +41,6 @@ C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\ob
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient.csproj.CopyComplete
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.exe
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.exe.config

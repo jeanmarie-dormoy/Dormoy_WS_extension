@@ -9,6 +9,18 @@ using System.Threading.Tasks;
 
 namespace ServiceTourism
 {
+    public enum SystemEnum { Places };
+    public enum CategoryType { UrnNlpTypesCategory };
+    public enum Group { Cuisine };
+    public enum ItemType { UrnNlpTypesPlace };
+    public partial class ResponseJSON
+    {
+        [JsonProperty("results")]
+        public Results Results { get; set; }
+
+        [JsonProperty("search")]
+        public Search Search { get; set; }
+    }
     public partial class Results
     {
         [JsonProperty("items")]
@@ -123,7 +135,7 @@ namespace ServiceTourism
     public partial class Context
     {
         [JsonProperty("location")]
-        public Location Location { get; set; }
+        public LocationJSON Location { get; set; }
 
         [JsonProperty("type")]
         public ItemType Type { get; set; }
@@ -132,7 +144,7 @@ namespace ServiceTourism
         public Uri Href { get; set; }
     }
 
-    public partial class Location
+    public partial class LocationJSON
     {
         [JsonProperty("position")]
         public double[] Position { get; set; }
@@ -172,22 +184,15 @@ namespace ServiceTourism
         public string CountryCode { get; set; }
     }
 
-    public enum SystemEnum { Places };
 
-    public enum CategoryType { UrnNlpTypesCategory };
-
-    public enum Group { Cuisine };
-
-    public enum ItemType { UrnNlpTypesPlace };
-
-    public partial class Welcome
+    public partial class ResponseJSON
     {
-        public static Welcome FromJson(string json) => JsonConvert.DeserializeObject<Welcome>(json, ServiceTourism.Converter.Settings);
+        public static ResponseJSON FromJson(string json) => JsonConvert.DeserializeObject<ResponseJSON>(json, ServiceTourism.Converter.Settings);
     }
 
     public static class Serialize
     {
-        public static string ToJson(this Welcome self) => JsonConvert.SerializeObject(self, ServiceTourism.Converter.Settings);
+        public static string ToJson(this ResponseJSON self) => JsonConvert.SerializeObject(self, ServiceTourism.Converter.Settings);
     }
 
     internal static class Converter
@@ -205,184 +210,5 @@ namespace ServiceTourism
                 new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
             },
         };
-    }
-
-    internal class SystemEnumConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(SystemEnum) || t == typeof(SystemEnum?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            if (value == "places")
-            {
-                return SystemEnum.Places;
-            }
-            throw new Exception("Cannot unmarshal type SystemEnum");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (SystemEnum)untypedValue;
-            if (value == SystemEnum.Places)
-            {
-                serializer.Serialize(writer, "places");
-                return;
-            }
-            throw new Exception("Cannot marshal type SystemEnum");
-        }
-
-        public static readonly SystemEnumConverter Singleton = new SystemEnumConverter();
-    }
-
-    internal class CategoryTypeConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(CategoryType) || t == typeof(CategoryType?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            if (value == "urn:nlp-types:category")
-            {
-                return CategoryType.UrnNlpTypesCategory;
-            }
-            throw new Exception("Cannot unmarshal type CategoryType");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (CategoryType)untypedValue;
-            if (value == CategoryType.UrnNlpTypesCategory)
-            {
-                serializer.Serialize(writer, "urn:nlp-types:category");
-                return;
-            }
-            throw new Exception("Cannot marshal type CategoryType");
-        }
-
-        public static readonly CategoryTypeConverter Singleton = new CategoryTypeConverter();
-    }
-
-    internal class GroupConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(Group) || t == typeof(Group?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            if (value == "cuisine")
-            {
-                return Group.Cuisine;
-            }
-            throw new Exception("Cannot unmarshal type Group");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (Group)untypedValue;
-            if (value == Group.Cuisine)
-            {
-                serializer.Serialize(writer, "cuisine");
-                return;
-            }
-            throw new Exception("Cannot marshal type Group");
-        }
-
-        public static readonly GroupConverter Singleton = new GroupConverter();
-    }
-
-    internal class ItemTypeConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(ItemType) || t == typeof(ItemType?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            if (value == "urn:nlp-types:place")
-            {
-                return ItemType.UrnNlpTypesPlace;
-            }
-            throw new Exception("Cannot unmarshal type ItemType");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (ItemType)untypedValue;
-            if (value == ItemType.UrnNlpTypesPlace)
-            {
-                serializer.Serialize(writer, "urn:nlp-types:place");
-                return;
-            }
-            throw new Exception("Cannot marshal type ItemType");
-        }
-
-        public static readonly ItemTypeConverter Singleton = new ItemTypeConverter();
-    }
-
-    internal class ParseStringConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(long) || t == typeof(long?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null) return null;
-            var value = serializer.Deserialize<string>(reader);
-            long l;
-            if (Int64.TryParse(value, out l))
-            {
-                return l;
-            }
-            throw new Exception("Cannot unmarshal type long");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            if (untypedValue == null)
-            {
-                serializer.Serialize(writer, null);
-                return;
-            }
-            var value = (long)untypedValue;
-            serializer.Serialize(writer, value.ToString());
-            return;
-        }
-
-        public static readonly ParseStringConverter Singleton = new ParseStringConverter();
-    }
-    public partial class ResponseJSON
-    {
-        [JsonProperty("results")]
-        public Results Results { get; set; }
-
-        [JsonProperty("search")]
-        public Search Search { get; set; }
-
-        
-
-       
     }
 }

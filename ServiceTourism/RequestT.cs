@@ -13,7 +13,18 @@ namespace ServiceTourism
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
            ConcurrencyMode = ConcurrencyMode.Single)]
-    class RequestT : IRequestT
+
+    public class Place
+    {
+        public Location location;
+        public string title;
+        public Place(double lat, double lng, string title)
+        {
+            location = new Location(lat, lng);
+            this.title = title;
+        }
+    }
+    public class RequestT : IRequestT
     {
         private static string API_KEY = "OiY75Ntz5fYsYZyroIju5x96Ezev4kY7f9KcKDTcZ8c";
 
@@ -23,7 +34,21 @@ namespace ServiceTourism
             return temp.Replace(",", ".");
         }
 
-        public LocationCollection getTourismPlaceList(
+        private bool keepIt(string value)
+        {
+            switch (value)
+            {
+                case "education-facility":
+                case "service":
+                case "hospital-health-care-facility":
+                case "business-services":
+                    return false;
+                default:
+                    return true;
+            }
+        }
+
+        public List<Place> getTourismPlaceList(
             double west_lng, double south_lat,
             double east_lng, double north_lat)
         {
@@ -32,7 +57,7 @@ namespace ServiceTourism
             Stream dataStream;
             StreamReader reader;
             string responseFromServer;
-            string uri = $"https://places.ls.hereapi.com/places/v1/discover/around?api_key={API_KEY}";
+            string uri = $"https://places.ls.hereapi.com/places/v1/discover/around?apiKey={API_KEY}";
             uri += "&in=" + reformatData(west_lng) + ","
                 + reformatData(south_lat) + ","
                 + reformatData(east_lng) + ","
@@ -44,10 +69,23 @@ namespace ServiceTourism
             reader = new StreamReader(dataStream);
             responseFromServer = reader.ReadToEnd();
 
-            ResponseJSON answerJSON = JsonConvert.DeserializeObject<ResponseJSON>(responseFromServer);
-            if (answerJSON == null)
+            ResponseJSON responseJSON = ResponseJSON.FromJson(responseFromServer);
+
+            if (responseJSON == null || responseJSON.Results.Items == null
+                || responseJSON.Results.Items.Length == 0)
                 return null;
-            return null;
+
+            Item[] placesList = responseJSON.Results.Items;
+            List<Place> res = new List<Place>();
+            for (int i = 0; i < placesList.Length; ++i)
+            {
+                Item item = placesList[i];
+                if (item != null && keepIt(item.Category.Id))
+                {
+                    res.Add(new Place(item.Position[0], item.Position[1], item.Title));
+                }
+            }
+            return res;
         }
     }
 }

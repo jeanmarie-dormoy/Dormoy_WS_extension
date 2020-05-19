@@ -95,6 +95,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ServiceTourism\ServiceTourism.csproj">
+      <Project>{cc0cb4b5-8b5a-4ea3-beb0-c251f647b817}</Project>
+      <Name>ServiceTourism</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServiceX\ServiceX.csproj">
       <Project>{229b8938-9d26-4f04-8745-e4929dfff6db}</Project>
       <Name>ServiceX</Name>
@@ -109,6 +113,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

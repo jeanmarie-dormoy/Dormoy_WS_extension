@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace ServiceTourism
 {
     [ServiceContract]
-    class IRequestT
+    public interface IRequestT
     {
         [OperationContract]
-        LocationCollection getTourismPlaceList(
+        List<Place> getTourismPlaceList(
             double west_lng, double south_lat,
             double east_lng, double north_lat);
     }
