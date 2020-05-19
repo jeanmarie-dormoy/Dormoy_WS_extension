@@ -29,6 +29,7 @@ namespace WindowsFormsClient
         Location posDepart, posArrivee;
         MainWindow mainWin;
         LocationCollection locationList;
+        double west_lng, east_lng, north_lat, south_lat;
 
         public Form1()
         {
@@ -46,11 +47,16 @@ namespace WindowsFormsClient
             {
                 new Location(43.569781, 1.467381),
                 new Location(43.607265, 1.439456)
-            };    
+            };
+
+            comboboxVille.SelectedIndex = 1;
+            textBoxAdresseDepart.Text = "135 avenue de rangueil";
+            textBoxAdresseArrivee.Text = "5 place du peyrou";
+            buttonCalcul_Click(null, null);
+            buildPolygon();
 
             // testREST();  //if you want to test some REST GET/POST methods
             // testPOST();
-
 
             // req.refreshStationList("rouen");
             // textBoxAdresseDepart.Text = "place du vieux marché";
@@ -115,6 +121,25 @@ namespace WindowsFormsClient
             }
         }
 
+        private void buildPolygon()
+        {
+            //1.43922052825561,43.5677165058716,1.46445685202763,43.6074900232999
+            west_lng = Math.Min(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
+            east_lng = Math.Max(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
+            south_lat = Math.Min(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
+            north_lat = Math.Max(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
+
+            textBoxDebug.Visible = true;
+            textBoxDebug.Text = "west_lng=" + west_lng + "east_lng=" + east_lng + "south_lat=" + south_lat + "north_lat=" + north_lat;
+            LocationCollection testPolygon = new LocationCollection() {
+                new Location(south_lat, west_lng),
+                new Location(south_lat, east_lng),
+                new Location(north_lat, east_lng),
+                new Location(north_lat, west_lng)
+            };
+            mainWin.BuildDebugPolygon(testPolygon);
+        }
+
         private void comboboxVille_SelectedIndexChanged(object sender, EventArgs e)
         {
             
@@ -168,6 +193,8 @@ namespace WindowsFormsClient
             Welcome answerJSON = JsonConvert.DeserializeObject<Welcome>(responseFromServer);
             textBoxDebug.Text = answerJSON.getURIOfSegmentResult;
         }
+
+        
 
         private void testPOST() //IF you run this method, add breakpoint at the end of this method
         {

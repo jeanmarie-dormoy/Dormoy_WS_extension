@@ -53,6 +53,17 @@ namespace WindowsFormsClient
             }
         }
 
+        public void BuildDebugPolygon(LocationCollection locationList)
+        {
+            MapPolygon polygon = new MapPolygon();
+            polygon.Fill = new SolidColorBrush(Colors.Blue);
+            polygon.Stroke = new SolidColorBrush(Colors.Green);
+            polygon.StrokeThickness = 2;
+            polygon.Opacity = 0.1;
+            polygon.Locations = locationList;
+            _instance.bingMap.Children.Add(polygon);
+        }
+
         public void CenterMap(Location begin, Location end)
         {
             Location middle = new Location(
