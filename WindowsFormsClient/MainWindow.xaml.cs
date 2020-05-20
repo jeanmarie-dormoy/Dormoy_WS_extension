@@ -37,15 +37,27 @@ namespace WindowsFormsClient
             InitializeComponent();
         }
 
-        public void BuildPushPin(LocationCollection locationList)
+        public void BuildPushPin(LocationCollection locationList, string color)
         {
+            Color colorObj;
+            switch (color)
+            {
+                case "green":
+                    colorObj = Color.FromArgb(200, 20, 180, (byte) 0);
+                    break;
+                case "grey":
+                default:
+                    colorObj = Color.FromArgb(100, 100, 100, (byte) 0);
+                    break;
+            }
             int i = 1;
             foreach (var location in locationList)
             {
+                colorObj.B = (byte) i;
                 Pushpin pushpin = new Pushpin()
                 {
                     Content = i.ToString(),
-                    Background = new SolidColorBrush(Color.FromArgb(100, 100, 100, (byte)i))
+                    Background = new SolidColorBrush(colorObj)
                 };
                 MapLayer.SetPosition(pushpin, location);
                 _instance.bingMap.Children.Add(pushpin);

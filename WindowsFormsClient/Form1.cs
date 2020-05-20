@@ -105,7 +105,7 @@ namespace WindowsFormsClient
 
                     mainWin.BuildPushPin(new LocationCollection() {
                         posDepart, nearestStationDepartLocation, nearestStationArriveeLocation, posArrivee
-                    });
+                    }, "grey");
                     mainWin.CenterMap(posDepart, posArrivee);                        
                 } else
                 {
@@ -141,8 +141,12 @@ namespace WindowsFormsClient
                 new Location(north_lat, west_lng)
             };
             mainWin.BuildDebugPolygon(testPolygon);
-            List<Place> placeList = reqTourism.getTourismPlaceList(west_lng, south_lat, east_lng, north_lat);
-            var hello = "coucou";
+            reqTourism.getTourismPlaceList(west_lng, south_lat, east_lng, north_lat);
+            List<Place> placeList = reqTourism.getPlaceList();
+
+            LocationCollection placeLocations = new LocationCollection();
+            placeList.ForEach(place => placeLocations.Add(new Location(place.location.Latitude, place.location.Longitude)));
+            mainWin.BuildPushPin(placeLocations, "green");
         }
 
         private void comboboxVille_SelectedIndexChanged(object sender, EventArgs e)

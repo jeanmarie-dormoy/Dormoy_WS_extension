@@ -26,8 +26,10 @@ namespace ServiceTourism
     }
     public class RequestT : IRequestT
     {
+        private List<Place> placeList = new List<Place>();
         private static string API_KEY = "OiY75Ntz5fYsYZyroIju5x96Ezev4kY7f9KcKDTcZ8c";
 
+        public List<Place> getPlaceList() { return this.placeList; }
         private string reformatData(double x)
         {
             String temp = x.ToString();
@@ -48,7 +50,7 @@ namespace ServiceTourism
             }
         }
 
-        public List<Place> getTourismPlaceList(
+        public void getTourismPlaceList(
             double west_lng, double south_lat,
             double east_lng, double north_lat)
         {
@@ -73,19 +75,18 @@ namespace ServiceTourism
 
             if (responseJSON == null || responseJSON.Results.Items == null
                 || responseJSON.Results.Items.Length == 0)
-                return null;
-
+                return;
+            placeList.Clear();
             Item[] placesList = responseJSON.Results.Items;
-            List<Place> res = new List<Place>();
+            //List<Place> res = new List<Place>();
             for (int i = 0; i < placesList.Length; ++i)
             {
                 Item item = placesList[i];
                 if (item != null && keepIt(item.Category.Id))
                 {
-                    res.Add(new Place(item.Position[0], item.Position[1], item.Title));
+                    placeList.Add(new Place(item.Position[0], item.Position[1], item.Title));
                 }
             }
-            return res;
         }
     }
 }
