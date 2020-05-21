@@ -5,6 +5,11 @@ __Install  Bing Maps Windows Presentation Foundation (WPF) Control
 Version 1.0__ via: 
 https://www.microsoft.com/en-us/download/details.aspx?id=27165
 
+__For the extensions, I developed a better winform Client and a new ServiceTourism__
+
+#### Notes about the new Winform Client
+I used __Bing Map WPF control__ instead of using webbrowser. This allowed to display all the segments of an itinerary.
+
 #### Notes about ServiceTourism:
 
 - We only compute tourism itinerary with the coordinates of the different
