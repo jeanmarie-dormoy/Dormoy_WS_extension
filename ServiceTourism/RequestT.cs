@@ -29,6 +29,13 @@ namespace ServiceTourism
             location = loc;
             this.title = title;
         }
+
+        public bool equals(Place other)
+        {
+            return this.location.Longitude == other.location.Longitude
+                && this.location.Latitude == other.location.Latitude
+                && this.title.Equals(other.title);
+        }
     }
 
     public class Box
@@ -80,6 +87,8 @@ namespace ServiceTourism
         {
             Dictionary<Place, Double> dict = new Dictionary<Place, double>();
             Dictionary<Place, Double> sortedDict;
+            if (placeList.Count == 0)
+                return null;
             foreach (Place place in placeList)
             {
                 dict[place] = GetDistance(
@@ -109,7 +118,7 @@ namespace ServiceTourism
             //List<Place> res = new List<Place>();
             RequestY reqy = new RequestY();
             Place nextPlace = velibDep;
-            Place oldPlace;
+            Place oldPlace = null;
             LocationCollection res = new LocationCollection(), temp = new LocationCollection();
             res.Add(velibDep.location);
             
@@ -123,20 +132,33 @@ namespace ServiceTourism
                  */
                 if (velibArr.location.Latitude > velibDep.location.Latitude)
                 {
-                    
-                    placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
-                    oldPlace = nextPlace;
-                    nextPlace = computeNearestPlace(nextPlace, alternative);
-                    temp = reqy.getSegmentCoordinateList(
-                        oldPlace.location, nextPlace.location, "cycling-regular");
-                    foreach (Location loc in temp)
-                        res.Insert(res.Count, loc);
-                    temp.Clear();
+                    while (nextPlace != null)
+                    {
+                        placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
+                        oldPlace = nextPlace;
+                        nextPlace = computeNearestPlace(nextPlace, alternative);
 
-                    box.east_lng = nextPlace.location.Longitude;
-                    box.south_lat = nextPlace.location.Latitude;
+                        if (nextPlace != null)
+                        {
+                            temp = reqy.getSegmentCoordinateList(
+                                oldPlace.location, nextPlace.location, "cycling-regular");
+                            foreach (Location loc in temp)
+                                res.Insert(res.Count, loc);
+                            temp.Clear();
+                            box.east_lng = nextPlace.location.Longitude;
+                            box.south_lat = nextPlace.location.Latitude;
+                        }
+                        
+                    }
+                    //var coucou = oldPlace.ToString();
                 }
             }
+
+            temp.Clear();
+            temp = reqy.getSegmentCoordinateList(
+                                oldPlace.location, velibArr.location, "cycling-regular");
+            foreach (Location loc in temp)
+                res.Insert(res.Count, loc);
 
 
             return res;

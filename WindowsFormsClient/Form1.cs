@@ -170,7 +170,7 @@ namespace WindowsFormsClient
                 new Place(nearestStationArriveeLocation, "velibArr"),
                 checkBoxAlternativeRoute.Checked);
             
-            mainWin.BuildSegment(tourismItinerary, Colors.Aquamarine);
+            mainWin.BuildSegment(tourismItinerary, Colors.Green);
             return;
         }
 
