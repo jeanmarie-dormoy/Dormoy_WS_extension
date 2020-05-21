@@ -9,3 +9,9 @@ C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\obj\De
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\obj\Debug\ServiceTourism.csproj.CopyComplete
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\obj\Debug\ServiceTourism.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\obj\Debug\ServiceTourism.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\bin\Debug\ServiceY.exe
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\bin\Debug\ServiceX.exe
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\bin\Debug\ServiceY.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\bin\Debug\ServiceY.exe.config
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\bin\Debug\ServiceX.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceTourism\bin\Debug\ServiceX.exe.config

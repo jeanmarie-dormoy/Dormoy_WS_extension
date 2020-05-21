@@ -1,5 +1,6 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
 using Newtonsoft.Json;
+using ServiceY;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,11 +24,29 @@ namespace ServiceTourism
             location = new Location(lat, lng);
             this.title = title;
         }
+        public Place(Location loc, string title)
+        {
+            location = loc;
+            this.title = title;
+        }
+    }
+
+    public class Box
+    {
+        public double west_lng, south_lat, east_lng, north_lat;
+        public Box(double west_lng, double south_lat, double east_lng, double north_lat)
+        {
+            this.west_lng = west_lng;
+            this.south_lat = south_lat;
+            this.east_lng = east_lng;
+            this.north_lat = north_lat;
+        }
     }
     public class RequestT : IRequestT
     {
         private List<Place> placeList = new List<Place>();
         private static string API_KEY = "OiY75Ntz5fYsYZyroIju5x96Ezev4kY7f9KcKDTcZ8c";
+        public Box box;
 
         public List<Place> getPlaceList() { return this.placeList; }
         private string reformatData(double x)
@@ -57,17 +76,15 @@ namespace ServiceTourism
                 + Math.Pow(a.location.Latitude - b.location.Latitude, 2));
         }
 
-        public Place computeNearestPlace(Location velibDep, Boolean alternative)
+        public Place computeNearestPlace(Place velibDep, Boolean alternative)
         {
             Dictionary<Place, Double> dict = new Dictionary<Place, double>();
             Dictionary<Place, Double> sortedDict;
             foreach (Place place in placeList)
             {
-                /*
                 dict[place] = GetDistance(
-                    velibDep,
-                    station.position.lat,
-                    station.position.lng); */
+                    new Place(velibDep.location.Latitude, velibDep.location.Longitude, "velibDep"),
+                    place);                    
             }
 
             sortedDict = dict.OrderBy(i => i.Value).ToDictionary(i => i.Key, i => i.Value);
@@ -78,6 +95,51 @@ namespace ServiceTourism
                     return entry.Key;
             }
             return null;
+        }
+
+        private Boolean isPlaceInside(Place place, Box box)
+        {
+            return
+                place.location.Longitude > box.west_lng && place.location.Longitude < box.east_lng
+                && place.location.Latitude > box.south_lat && place.location.Latitude < box.north_lat;
+        }
+
+        public LocationCollection buildTourismItinerary(Place velibDep, Place velibArr, Boolean alternative)
+        {
+            //List<Place> res = new List<Place>();
+            RequestY reqy = new RequestY();
+            Place nextPlace = velibDep;
+            Place oldPlace;
+            LocationCollection res = new LocationCollection(), temp = new LocationCollection();
+            res.Add(velibDep.location);
+            
+            
+
+            if (velibArr.location.Longitude < velibDep.location.Longitude)
+            {
+                /*  case:
+                 *  B
+                 *      A
+                 */
+                if (velibArr.location.Latitude > velibDep.location.Latitude)
+                {
+                    
+                    placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
+                    oldPlace = nextPlace;
+                    nextPlace = computeNearestPlace(nextPlace, alternative);
+                    temp = reqy.getSegmentCoordinateList(
+                        oldPlace.location, nextPlace.location, "cycling-regular");
+                    foreach (Location loc in temp)
+                        res.Insert(res.Count, loc);
+                    temp.Clear();
+
+                    box.east_lng = nextPlace.location.Longitude;
+                    box.south_lat = nextPlace.location.Latitude;
+                }
+            }
+
+
+            return res;
         }
 
         public void updateTourismPlaceList(

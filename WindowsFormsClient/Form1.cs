@@ -9,6 +9,7 @@ using System.Net;
 using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Maps.MapControl.WPF;
+using System.Windows.Media;
 
 
 namespace WindowsFormsClient
@@ -31,7 +32,8 @@ namespace WindowsFormsClient
         Location posDepart, posArrivee;
         MainWindow mainWin;
         LocationCollection locationList;
-        double west_lng, east_lng, north_lat, south_lat;
+        //double west_lng, east_lng, north_lat, south_lat;
+        Box box;
 
         public Form1()
         {
@@ -95,17 +97,17 @@ namespace WindowsFormsClient
                         posDepart,
                         nearestStationDepartLocation,
                         "foot-walking");
-                    mainWin.BuildSegment(locationList);
+                    mainWin.BuildSegment(locationList, Colors.Blue);
                     
                     locationList = req.getSegmentCoordinateList(
                         nearestStationDepartLocation, nearestStationArriveeLocation, 
                         "cycling-regular");
-                    mainWin.BuildSegment(locationList);
+                    mainWin.BuildSegment(locationList, Colors.Blue);
 
                     locationList = req.getSegmentCoordinateList(
                         nearestStationArriveeLocation, posArrivee,
                         "foot-walking");
-                    mainWin.BuildSegment(locationList);
+                    mainWin.BuildSegment(locationList, Colors.Blue);
 
                     mainWin.BuildPushPin(new LocationCollection() {
                         posDepart, nearestStationDepartLocation, nearestStationArriveeLocation, posArrivee
@@ -140,10 +142,12 @@ namespace WindowsFormsClient
         private void buildPolygon()
         {
             //1.43922052825561,43.5677165058716,1.46445685202763,43.6074900232999
-            west_lng = Math.Min(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
-            east_lng = Math.Max(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
-            south_lat = Math.Min(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
-            north_lat = Math.Max(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
+            double west_lng = Math.Min(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
+            double east_lng = Math.Max(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
+            double south_lat = Math.Min(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
+            double north_lat = Math.Max(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
+
+            reqTourism.box = new Box(west_lng, south_lat, east_lng, north_lat);
 
             textBoxDebug.Visible = true;
             textBoxDebug.Text = "west_lng=" + west_lng + "east_lng=" + east_lng + "south_lat=" + south_lat + "north_lat=" + north_lat;
@@ -161,6 +165,13 @@ namespace WindowsFormsClient
             placeList.ForEach(place => placeLocations.Add(new Location(place.location.Latitude, place.location.Longitude)));
             mainWin.BuildPushPin(placeList, "green");
 
+            LocationCollection tourismItinerary = reqTourism.buildTourismItinerary(
+                new Place(nearestStationDepartLocation, "velibDep"),
+                new Place(nearestStationArriveeLocation, "velibArr"),
+                checkBoxAlternativeRoute.Checked);
+            
+            mainWin.BuildSegment(tourismItinerary, Colors.Aquamarine);
+            return;
         }
 
         private void comboboxVille_SelectedIndexChanged(object sender, EventArgs e)

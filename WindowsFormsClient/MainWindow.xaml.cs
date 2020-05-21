@@ -120,14 +120,29 @@ namespace WindowsFormsClient
             _instance.bingMap.ZoomLevel = 15;
         }
 
-        public void BuildSegment(LocationCollection locationList)
+        public void BuildSegment(LocationCollection locationList, Color color)
         {
             MapPolyline polyline = new MapPolyline();
-            polyline.Stroke = new SolidColorBrush(Colors.Blue);
+            polyline.Stroke = new SolidColorBrush(color);
             polyline.StrokeThickness = 5;
             polyline.Opacity = 0.7;
             polyline.Locations = locationList;
             _instance.bingMap.Children.Add(polyline);
+        }
+
+        public void BuildSegment(List<Place> placeList)
+        {
+            LocationCollection locationList = new LocationCollection();
+            foreach (Place p in placeList)
+                locationList.Add(p.location);
+
+            MapPolyline polyline = new MapPolyline();
+            polyline.Stroke = new SolidColorBrush(Colors.Aquamarine);
+            polyline.StrokeThickness = 5;
+            polyline.Opacity = 0.7;
+            polyline.Locations = locationList;
+            _instance.bingMap.Children.Add(polyline);
+
         }
     }
 }

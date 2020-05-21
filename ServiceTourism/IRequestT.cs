@@ -20,6 +20,9 @@ namespace ServiceTourism
         List<Place> getPlaceList();
 
         [OperationContract]
-        Place computeNearestPlace(Location velibDep, Boolean alternative);
+        Place computeNearestPlace(Place velibDep, Boolean alternative);
+
+        [OperationContract]
+        LocationCollection buildTourismItinerary(Place velibDep, Place velibArr, Boolean alternative);
     }
 }
