@@ -12,11 +12,14 @@ namespace ServiceTourism
     public interface IRequestT
     {
         [OperationContract]
-        void getTourismPlaceList(
+        void updateTourismPlaceList(
             double west_lng, double south_lat,
             double east_lng, double north_lat);
 
         [OperationContract]
         List<Place> getPlaceList();
+
+        [OperationContract]
+        Place computeNearestPlace(Location velibDep, Boolean alternative);
     }
 }

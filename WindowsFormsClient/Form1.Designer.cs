@@ -42,12 +42,15 @@
             this.buttonAide = new System.Windows.Forms.Button();
             this.bingMapElement = new System.Windows.Forms.Integration.ElementHost();
             this.mainWindow1 = new WindowsFormsClient.MainWindow();
+            this.checkBoxAlternativeRoute = new System.Windows.Forms.CheckBox();
+            this.comboBoxChoiceTourism = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboboxVille
             // 
             this.comboboxVille.FormattingEnabled = true;
-            this.comboboxVille.Location = new System.Drawing.Point(154, 47);
+            this.comboboxVille.Location = new System.Drawing.Point(97, 47);
             this.comboboxVille.Name = "comboboxVille";
             this.comboboxVille.Size = new System.Drawing.Size(121, 24);
             this.comboboxVille.TabIndex = 1;
@@ -89,7 +92,7 @@
             // 
             // buttonCalcul
             // 
-            this.buttonCalcul.Location = new System.Drawing.Point(154, 185);
+            this.buttonCalcul.Location = new System.Drawing.Point(154, 228);
             this.buttonCalcul.Name = "buttonCalcul";
             this.buttonCalcul.Size = new System.Drawing.Size(233, 25);
             this.buttonCalcul.TabIndex = 11;
@@ -148,11 +151,42 @@
             this.bingMapElement.Text = "elementHost1";
             this.bingMapElement.Child = this.mainWindow1;
             // 
+            // checkBoxAlternativeRoute
+            // 
+            this.checkBoxAlternativeRoute.AutoSize = true;
+            this.checkBoxAlternativeRoute.Location = new System.Drawing.Point(44, 189);
+            this.checkBoxAlternativeRoute.Name = "checkBoxAlternativeRoute";
+            this.checkBoxAlternativeRoute.Size = new System.Drawing.Size(194, 21);
+            this.checkBoxAlternativeRoute.TabIndex = 22;
+            this.checkBoxAlternativeRoute.Text = "Alternative Tourism Route";
+            this.checkBoxAlternativeRoute.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxChoiceTourism
+            // 
+            this.comboBoxChoiceTourism.FormattingEnabled = true;
+            this.comboBoxChoiceTourism.Location = new System.Drawing.Point(352, 47);
+            this.comboBoxChoiceTourism.Name = "comboBoxChoiceTourism";
+            this.comboBoxChoiceTourism.Size = new System.Drawing.Size(77, 24);
+            this.comboBoxChoiceTourism.TabIndex = 23;
+            this.comboBoxChoiceTourism.SelectedIndexChanged += new System.EventHandler(this.comboBoxChoiceTourisme_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(260, 50);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(67, 17);
+            this.label1.TabIndex = 24;
+            this.label1.Text = "Tourisme";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1924, 1055);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.comboBoxChoiceTourism);
+            this.Controls.Add(this.checkBoxAlternativeRoute);
             this.Controls.Add(this.bingMapElement);
             this.Controls.Add(this.buttonAide);
             this.Controls.Add(this.labelAide);
@@ -187,6 +221,9 @@
         private System.Windows.Forms.Button buttonAide;
         private System.Windows.Forms.Integration.ElementHost bingMapElement;
         private MainWindow mainWindow1;
+        private System.Windows.Forms.CheckBox checkBoxAlternativeRoute;
+        private System.Windows.Forms.ComboBox comboBoxChoiceTourism;
+        private System.Windows.Forms.Label label1;
     }
 }
 

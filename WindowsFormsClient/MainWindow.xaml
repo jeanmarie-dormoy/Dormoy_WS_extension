@@ -7,6 +7,7 @@
              xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
              Height="450"
              Width="800"
+             
              >
     <Grid>
         <!--d:DesignHeight="450" d:DesignWidth="800"
@@ -18,4 +19,23 @@
             Mode="Aerial"
             />
     </Grid>
+    <UserControl.Resources>
+        <!--ControlTemplate x:Key="PushPinTemplate" TargetType="m:Pushpin">
+            <Grid Background="Transparent">
+
+                <TextBlock Name="textBlock1" Text="{TemplateBinding Content}" Grid.Column="0" Grid.Row="0" Foreground="Black"></TextBlock>
+                <Rectangle InkCanvas.Left="24" InkCanvas.Top="22" Width="500" Height="200" Margin="10 2 0 0">
+                <Rectangle Width="10" Height="10" Margin="0 35 0 0">
+                    <Rectangle.Fill >
+                        <ImageBrush ImageSource="./WindowsFormsClient/pinpush.jpg" />
+                        <ImageBrush Stretch="Uniform"  AlignmentY="Center" ImageSource="pinpush.jpg"></ImageBrush>
+                    </Rectangle.Fill>
+                </Rectangle>
+                
+            </Grid>
+        </ControlTemplate-->
+    </UserControl.Resources>
+
 </UserControl>
+    
+

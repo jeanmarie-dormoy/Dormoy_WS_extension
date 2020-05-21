@@ -43,8 +43,12 @@ namespace WindowsFormsClient
             List<Contract> cList = req.getContracts();
             foreach (Contract c in cList)
                 comboboxVille.Items.Add(c.name);
+            comboBoxChoiceTourism.Items.Add("OUI");
+            comboBoxChoiceTourism.Items.Add("NON");
+            checkBoxAlternativeRoute.Visible = false;
             mainWin = MainWindow.getInstance();
             bingMapElement.Child = mainWin;
+            this.AllowTransparency = true;
 
             locationList = new LocationCollection
             {
@@ -124,6 +128,15 @@ namespace WindowsFormsClient
             }
         }
 
+        private void comboBoxChoiceTourisme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            checkBoxAlternativeRoute.Checked = false;
+            if (comboBoxChoiceTourism.SelectedItem.ToString().Equals("OUI"))
+                checkBoxAlternativeRoute.Visible = true;
+            else if (comboBoxChoiceTourism.SelectedItem.ToString().Equals("NON"))
+                checkBoxAlternativeRoute.Visible = false;
+        }
+
         private void buildPolygon()
         {
             //1.43922052825561,43.5677165058716,1.46445685202763,43.6074900232999
@@ -141,12 +154,13 @@ namespace WindowsFormsClient
                 new Location(north_lat, west_lng)
             };
             mainWin.BuildDebugPolygon(testPolygon);
-            reqTourism.getTourismPlaceList(west_lng, south_lat, east_lng, north_lat);
+            reqTourism.updateTourismPlaceList(west_lng, south_lat, east_lng, north_lat);
             List<Place> placeList = reqTourism.getPlaceList();
 
             LocationCollection placeLocations = new LocationCollection();
             placeList.ForEach(place => placeLocations.Add(new Location(place.location.Latitude, place.location.Longitude)));
-            mainWin.BuildPushPin(placeLocations, "green");
+            mainWin.BuildPushPin(placeList, "green");
+
         }
 
         private void comboboxVille_SelectedIndexChanged(object sender, EventArgs e)

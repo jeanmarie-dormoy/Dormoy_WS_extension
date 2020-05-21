@@ -13,9 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Maps.MapControl.WPF;
+using ServiceTourism;
 
 namespace WindowsFormsClient
 {
+    
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
@@ -65,6 +67,39 @@ namespace WindowsFormsClient
             }
         }
 
+        public void BuildPushPin(List<Place> placeList, string color)
+        {
+            Color colorObj;
+            switch (color)
+            {
+                case "green":
+                    colorObj = Color.FromArgb(200, 20, 180, (byte)0);
+                    break;
+                case "grey":
+                default:
+                    colorObj = Color.FromArgb(100, 100, 100, (byte)0);
+                    break;
+            }
+            int i = 1;
+            foreach (var place in placeList)
+            {
+                colorObj.B = (byte)i;
+                ToolTip infos = new ToolTip();
+                infos.Content = place.title;
+                infos.Width = 170;
+                Pushpin pushpin = new Pushpin()
+                {
+                    //Content = place.title,
+                    Background = new SolidColorBrush(colorObj),
+                    ToolTip = infos
+                };
+                //pushpin.Template = (ControlTemplate) FindResource("PushPinTemplate");
+                MapLayer.SetPosition(pushpin, place.location);
+                _instance.bingMap.Children.Add(pushpin);
+                i++;
+            }
+        }
+
         public void BuildDebugPolygon(LocationCollection locationList)
         {
             MapPolygon polygon = new MapPolygon();
@@ -96,13 +131,3 @@ namespace WindowsFormsClient
         }
     }
 }
-
-/* DEBUG
-            Pushpin pushpin1 = new Pushpin()
-            {
-                Content = "M",
-                Background = new SolidColorBrush(Color.FromArgb(100, 100, 100, (byte)4))
-            };
-            MapLayer.SetPosition(pushpin1, middle);
-            _instance.bingMap.Children.Add(pushpin1);
-            */

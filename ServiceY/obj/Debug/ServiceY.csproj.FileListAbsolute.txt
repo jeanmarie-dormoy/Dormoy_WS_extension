@@ -13,14 +13,14 @@ C:\Users\user\Documents\S8\webservices\Dormoy_WS_Final\ServiceY\obj\Debug\Servic
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\ServiceY.exe.config
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\ServiceY.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\ServiceY.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\Microsoft.Maps.MapControl.WPF.dll
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\Newtonsoft.Json.dll
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\ServiceX.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\ServiceX.pdb
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\ServiceX.exe.config
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\Microsoft.Maps.MapControl.WPF.xml
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\Newtonsoft.Json.xml
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\obj\Debug\ServiceY.csprojAssemblyReference.cache
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\obj\Debug\ServiceY.csproj.CopyComplete
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\obj\Debug\ServiceY.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\obj\Debug\ServiceY.pdb
-C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\Microsoft.Maps.MapControl.WPF.dll
-C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\ServiceY\bin\Debug\Microsoft.Maps.MapControl.WPF.xml

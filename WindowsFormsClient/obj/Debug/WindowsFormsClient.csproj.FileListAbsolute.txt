@@ -21,8 +21,11 @@ C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bi
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\WindowsFormsClient.pdb
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\Microsoft.Maps.MapControl.WPF.dll
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceX.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceY.exe
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.pdb
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.exe.config
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceX.pdb
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceX.exe.config
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceY.pdb
@@ -41,6 +44,4 @@ C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\ob
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient.csproj.CopyComplete
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient.exe
 C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient.pdb
-C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.exe
-C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.pdb
-C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\bin\Debug\ServiceTourism.exe.config
+C:\Users\user\Documents\S8\webservices\Dormoy_WS_extension\WindowsFormsClient\obj\Debug\WindowsFormsClient_Content.g.cs

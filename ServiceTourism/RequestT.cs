@@ -50,7 +50,37 @@ namespace ServiceTourism
             }
         }
 
-        public void getTourismPlaceList(
+        private double GetDistance(Place a, Place b)
+        {
+            return Math.Sqrt(
+                Math.Pow(a.location.Longitude - b.location.Longitude, 2)
+                + Math.Pow(a.location.Latitude - b.location.Latitude, 2));
+        }
+
+        public Place computeNearestPlace(Location velibDep, Boolean alternative)
+        {
+            Dictionary<Place, Double> dict = new Dictionary<Place, double>();
+            Dictionary<Place, Double> sortedDict;
+            foreach (Place place in placeList)
+            {
+                /*
+                dict[place] = GetDistance(
+                    velibDep,
+                    station.position.lat,
+                    station.position.lng); */
+            }
+
+            sortedDict = dict.OrderBy(i => i.Value).ToDictionary(i => i.Key, i => i.Value);
+
+            foreach (KeyValuePair<Place, Double> entry in sortedDict)
+            {
+                //if (entry.Key.available_bikes > 0)
+                    return entry.Key;
+            }
+            return null;
+        }
+
+        public void updateTourismPlaceList(
             double west_lng, double south_lat,
             double east_lng, double north_lat)
         {
