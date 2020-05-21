@@ -34,37 +34,29 @@ namespace WindowsFormsClient
         MainWindow mainWin;
         LocationCollection locationList;
         //double west_lng, east_lng, north_lat, south_lat;
-        Box box;
 
         public Form1()
         {
             InitializeComponent();
+            AllowTransparency = true;
             textBoxDebug.Visible = false;
             labelAide.Visible = false;
+
             req = new RequestY();
             reqTourism = new RequestT();
-            List<Contract> cList = req.getContracts();
-            foreach (Contract c in cList)
+            mainWin = MainWindow.getInstance();
+            bingMapElement.Child = mainWin;
+        
+            foreach (Contract c in req.getContracts())
                 comboboxVille.Items.Add(c.name);
             comboBoxChoiceTourism.Items.Add("OUI");
             comboBoxChoiceTourism.Items.Add("NON");
-            checkBoxAlternativeRoute.Visible = false;
-            mainWin = MainWindow.getInstance();
-            bingMapElement.Child = mainWin;
-            this.AllowTransparency = true;
+            checkBoxAlternativeRoute.Visible = false;        
 
-            locationList = new LocationCollection
-            {
-                new Location(43.569781, 1.467381),
-                new Location(43.607265, 1.439456)
-            };
-
-            comboboxVille.SelectedIndex = 0;
+            // Various things to test:
+            /* comboboxVille.SelectedIndex = 0;
             textBoxAdresseArrivee.Text = "2 rue nansen";
-            textBoxAdresseDepart.Text = "5 rue jussieu";
-            comboBoxChoiceTourism.SelectedIndex = 0;
-            buttonCalcul_Click(null, null);
-            //buildPolygon();
+            textBoxAdresseDepart.Text = "5 rue jussieu"; */
 
             // testREST();  //if you want to test some REST GET/POST methods
             // testPOST();
@@ -76,9 +68,6 @@ namespace WindowsFormsClient
             //2 rue de nansen
             //5 rue jussieu //ROUEN
         }
-
-        
-
         private void buttonCalcul_Click(object sender, EventArgs e)
         {
             string adresseDepart = textBoxAdresseDepart.Text;
@@ -123,11 +112,8 @@ namespace WindowsFormsClient
                         locationList = req.getSegmentCoordinateList(
                         nearestStationDepartLocation, nearestStationArriveeLocation,
                         "cycling-regular");
-                        mainWin.BuildSegment(locationList, Colors.Blue);
-                    }
-                    
-
-                                           
+                        mainWin.BuildSegment(locationList, Colors.Chartreuse);
+                    }                               
                 } else
                 {
                     labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
@@ -156,14 +142,19 @@ namespace WindowsFormsClient
 
         private void buildPolygon()
         {
+            LocationCollection placeLocations, tourismItinerary;
+            List<Place> placeList, visitedPlaces, nonVisitedPlaces;
+            nonVisitedPlaces = new List<Place>();
+            visitedPlaces = new List<Place>();
+            placeLocations = new LocationCollection();
             double west_lng = Math.Min(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
             double east_lng = Math.Max(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
             double south_lat = Math.Min(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
             double north_lat = Math.Max(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
-            reqTourism.box = new Box(west_lng, south_lat, east_lng, north_lat);
 
-            textBoxDebug.Visible = true;
-            textBoxDebug.Text = "west_lng=" + west_lng + "east_lng=" + east_lng + "south_lat=" + south_lat + "north_lat=" + north_lat;
+            // textBoxDebug.Visible = true;
+            // textBoxDebug.Text = "west_lng=" + west_lng + "east_lng=" + east_lng + "south_lat=" + south_lat + "north_lat=" + north_lat;
+            
             LocationCollection testPolygon = new LocationCollection() {
                 new Location(south_lat, west_lng),
                 new Location(south_lat, east_lng),
@@ -171,21 +162,18 @@ namespace WindowsFormsClient
                 new Location(north_lat, west_lng)
             };
             mainWin.BuildDebugPolygon(testPolygon);
-            reqTourism.updateTourismPlaceList(west_lng, south_lat, east_lng, north_lat);
-            List<Place> placeList = reqTourism.getPlaceList();
 
-            LocationCollection placeLocations = new LocationCollection();
+            reqTourism.box = new Box(west_lng, south_lat, east_lng, north_lat);
+            reqTourism.updateTourismPlaceList();
+            placeList = reqTourism.getPlaceList();  
             placeList.ForEach(place => placeLocations.Add(new Location(place.location.Latitude, place.location.Longitude)));
-            //mainWin.BuildPushPin(placeList, "green");
 
-            LocationCollection tourismItinerary = reqTourism.buildTourismItinerary(
+            tourismItinerary = reqTourism.buildTourismItinerary(
                 new Place(nearestStationDepartLocation, "velibDep"),
                 new Place(nearestStationArriveeLocation, "velibArr"),
                 checkBoxAlternativeRoute.Checked);       
             mainWin.BuildSegment(tourismItinerary, Colors.LightGreen);
-
-            List<Place> visitedPlaces = new List<Place>();
-            List<Place> nonVisitedPlaces = new List<Place>();
+           
             foreach (Location loc in tourismItinerary)
             {
                 int index = placeList.FindIndex(
@@ -194,19 +182,22 @@ namespace WindowsFormsClient
                 if (index != -1)
                     visitedPlaces.Add(placeList[index]);
             }
-
             nonVisitedPlaces = placeList.Where(p => !visitedPlaces.Contains(p)).ToList<Place>();
             var coucou = tourismItinerary;
             mainWin.BuildPushPin(nonVisitedPlaces, Colors.DarkRed, false);
             mainWin.BuildPushPin(visitedPlaces, Colors.Green, true);
-            
-            return;
         }
 
         private void comboboxVille_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            mainWin.bingMap.Children.Clear();
             labelInfos.Text = "Patientez svp...\n";
+
+            textBoxAdresseDepart.Text = "";
+            textBoxAdresseArrivee.Text = "";
+            checkBoxAlternativeRoute.Checked = false;
+            checkBoxAlternativeRoute.Visible = false;
+            comboBoxChoiceTourism.ResetText();
             string selectedVille = comboboxVille.SelectedItem.ToString();
 
             req.refreshStationList(selectedVille);
@@ -217,14 +208,24 @@ namespace WindowsFormsClient
 
         private void buttonAide_Click(object sender, EventArgs e)
         {
-            labelAide.Visible = true;
-            labelAide.Text =
-                "1.  sélectionnez la ville\n"
-                + "2.  rentrez le départ et la fin de l'itinéraire (doivent être dans la même ville)\n"
-                + "3.  cliquez sur calculez itinéraire\n"
-                + "4.  l'application affiche par défaut le premier segment pédestre de l'itinéraire\n"
-                + "    vous pouvez cliquez sur les boutons correspondant pour visualiser chacun des\n"
-                + "    segments de l'itinéraire";
+            if (!labelAide.Visible)
+            {
+                labelAide.Visible = true;
+                labelAide.Text =
+                    "1.  sélectionnez la ville   Si vous voulez un itinéraire Velib qui passe par des lieux de tourisme,"
+                    + " cliquez oui dans la combobox\n"
+                    + "2.  rentrez l'adresse de départ et celle de fin de l'itinéraire (doivent être dans la même ville)"
+                    + " Cochez \"Alternative Route\" si vous voulez un itinéraire de tourisme alternatif\n"
+                    + "3.  cliquez sur \"Calcul itinéraire\"\n"
+                    + "4.  Si vous avez demandé un itinéraire velib Classique, les 3 segments pied - vélo - pied"
+                    + " s'affichent. Dans le cas où vous avez demandé que l'itinéraire velib passe par des lieux de\n"
+                    + "    tourisme, vous voyez en vert clair l'itinéraire de tourisme.\n"
+                    + "5.  Si vous survolez un pin, vous pouvez voir son nom s'afficher\n";
+            } else
+            {
+                labelAide.Visible = false;
+                labelAide.Text = "";
+            }
         }
 
         private VelibStation getStationWithName(string name)

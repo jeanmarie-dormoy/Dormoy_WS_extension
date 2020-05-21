@@ -15,28 +15,7 @@ namespace ServiceTourism
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single,
            ConcurrencyMode = ConcurrencyMode.Single)]
 
-    public class Place
-    {
-        public Location location;
-        public string title;
-        public Place(double lat, double lng, string title)
-        {
-            location = new Location(lat, lng);
-            this.title = title;
-        }
-        public Place(Location loc, string title)
-        {
-            location = loc;
-            this.title = title;
-        }
-
-        public bool equals(Place other)
-        {
-            return this.location.Longitude == other.location.Longitude
-                && this.location.Latitude == other.location.Latitude
-                && this.title.Equals(other.title);
-        }
-    }
+    
 
     public class Box
     {
@@ -250,9 +229,7 @@ namespace ServiceTourism
             return res;
         }
 
-        public void updateTourismPlaceList(
-            double west_lng, double south_lat,
-            double east_lng, double north_lat)
+        public void updateTourismPlaceList()
         {
             WebRequest request;
             WebResponse response;
@@ -260,10 +237,10 @@ namespace ServiceTourism
             StreamReader reader;
             string responseFromServer;
             string uri = $"https://places.ls.hereapi.com/places/v1/discover/around?apiKey={API_KEY}";
-            uri += "&in=" + reformatData(west_lng) + ","
-                + reformatData(south_lat) + ","
-                + reformatData(east_lng) + ","
-                + reformatData(north_lat);
+            uri += "&in=" + reformatData(box.west_lng) + ","
+                + reformatData(box.south_lat) + ","
+                + reformatData(box.east_lng) + ","
+                + reformatData(box.north_lat);
             request = WebRequest.Create(uri);
             response = request.GetResponse();
 

@@ -59,7 +59,6 @@ namespace ServiceY
             double arr_lat, double arr_lng,
             string transportation_way);
 
-        //TODO: tester ça en get si temps
         [OperationContract]
         [WebInvoke(
             Method = "GET",

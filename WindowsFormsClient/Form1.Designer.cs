@@ -40,11 +40,11 @@
             this.textBoxDebug = new System.Windows.Forms.TextBox();
             this.labelAide = new System.Windows.Forms.Label();
             this.buttonAide = new System.Windows.Forms.Button();
-            this.bingMapElement = new System.Windows.Forms.Integration.ElementHost();
-            this.mainWindow1 = new WindowsFormsClient.MainWindow();
             this.checkBoxAlternativeRoute = new System.Windows.Forms.CheckBox();
             this.comboBoxChoiceTourism = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.bingMapElement = new System.Windows.Forms.Integration.ElementHost();
+            this.mainWindow1 = new WindowsFormsClient.MainWindow();
             this.SuspendLayout();
             // 
             // comboboxVille
@@ -126,7 +126,7 @@
             // labelAide
             // 
             this.labelAide.AutoSize = true;
-            this.labelAide.Location = new System.Drawing.Point(504, 214);
+            this.labelAide.Location = new System.Drawing.Point(666, 189);
             this.labelAide.Name = "labelAide";
             this.labelAide.Size = new System.Drawing.Size(46, 17);
             this.labelAide.TabIndex = 18;
@@ -141,15 +141,6 @@
             this.buttonAide.Text = "Aide -->";
             this.buttonAide.UseVisualStyleBackColor = true;
             this.buttonAide.Click += new System.EventHandler(this.buttonAide_Click);
-            // 
-            // bingMapElement
-            // 
-            this.bingMapElement.Location = new System.Drawing.Point(44, 407);
-            this.bingMapElement.Name = "bingMapElement";
-            this.bingMapElement.Size = new System.Drawing.Size(1859, 605);
-            this.bingMapElement.TabIndex = 20;
-            this.bingMapElement.Text = "elementHost1";
-            this.bingMapElement.Child = this.mainWindow1;
             // 
             // checkBoxAlternativeRoute
             // 
@@ -178,6 +169,15 @@
             this.label1.Size = new System.Drawing.Size(67, 17);
             this.label1.TabIndex = 24;
             this.label1.Text = "Tourisme";
+            // 
+            // bingMapElement
+            // 
+            this.bingMapElement.Location = new System.Drawing.Point(44, 316);
+            this.bingMapElement.Name = "bingMapElement";
+            this.bingMapElement.Size = new System.Drawing.Size(1859, 696);
+            this.bingMapElement.TabIndex = 20;
+            this.bingMapElement.Text = "elementHost1";
+            this.bingMapElement.Child = this.mainWindow1;
             // 
             // Form1
             // 
