@@ -67,6 +67,29 @@ namespace WindowsFormsClient
             }
         }
 
+        public void BuildPushPin(List<Place> placeList, Color color, Boolean visited)
+        {
+            int i = 1; String c = "";
+            foreach (Place place in placeList)
+            {
+                if (visited)
+                    c = i.ToString();
+                Pushpin pushpin = new Pushpin()
+                {
+                    Content = c,
+                    Background = new SolidColorBrush(color),
+                    ToolTip = new ToolTip()
+                    {
+                        Content = place.title,
+                        Width = 170
+                    }
+                };
+                MapLayer.SetPosition(pushpin, place.location);
+                _instance.bingMap.Children.Add(pushpin);
+                i++;
+            }
+        }
+        /*
         public void BuildPushPin(List<Place> placeList, string color)
         {
             Color colorObj;
@@ -98,7 +121,7 @@ namespace WindowsFormsClient
                 _instance.bingMap.Children.Add(pushpin);
                 i++;
             }
-        }
+        }*/
 
         public void BuildDebugPolygon(LocationCollection locationList)
         {

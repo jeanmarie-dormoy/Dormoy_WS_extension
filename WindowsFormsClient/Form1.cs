@@ -10,6 +10,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Microsoft.Maps.MapControl.WPF;
 using System.Windows.Media;
+using System.Linq;
 
 
 namespace WindowsFormsClient
@@ -58,11 +59,12 @@ namespace WindowsFormsClient
                 new Location(43.607265, 1.439456)
             };
 
-            comboboxVille.SelectedIndex = 1;
-            textBoxAdresseDepart.Text = "135 avenue de rangueil";
-            textBoxAdresseArrivee.Text = "5 place du peyrou";
+            comboboxVille.SelectedIndex = 0;
+            textBoxAdresseArrivee.Text = "2 rue nansen";
+            textBoxAdresseDepart.Text = "5 rue jussieu";
+            comboBoxChoiceTourism.SelectedIndex = 0;
             buttonCalcul_Click(null, null);
-            buildPolygon();
+            //buildPolygon();
 
             // testREST();  //if you want to test some REST GET/POST methods
             // testPOST();
@@ -70,6 +72,9 @@ namespace WindowsFormsClient
             // req.refreshStationList("rouen");
             // textBoxAdresseDepart.Text = "place du vieux marché";
             // textBoxAdresseArrivee.Text = "2 rue de lessard";
+
+            //2 rue de nansen
+            //5 rue jussieu //ROUEN
         }
 
         
@@ -80,6 +85,7 @@ namespace WindowsFormsClient
             string adresseArrivee = textBoxAdresseArrivee.Text;
             posDepart = req.geocodingAddress(adresseDepart);
             posArrivee = req.geocodingAddress(adresseArrivee);
+            mainWin.bingMap.Children.Clear();
             
             if (posDepart != null && posArrivee != null)
             {
@@ -98,11 +104,6 @@ namespace WindowsFormsClient
                         nearestStationDepartLocation,
                         "foot-walking");
                     mainWin.BuildSegment(locationList, Colors.Blue);
-                    
-                    locationList = req.getSegmentCoordinateList(
-                        nearestStationDepartLocation, nearestStationArriveeLocation, 
-                        "cycling-regular");
-                    mainWin.BuildSegment(locationList, Colors.Blue);
 
                     locationList = req.getSegmentCoordinateList(
                         nearestStationArriveeLocation, posArrivee,
@@ -112,7 +113,21 @@ namespace WindowsFormsClient
                     mainWin.BuildPushPin(new LocationCollection() {
                         posDepart, nearestStationDepartLocation, nearestStationArriveeLocation, posArrivee
                     }, "grey");
-                    mainWin.CenterMap(posDepart, posArrivee);                        
+                    mainWin.CenterMap(posDepart, posArrivee);
+
+                    if (checkBoxAlternativeRoute.Visible)
+                    {
+                        buildPolygon();
+                    } else
+                    {
+                        locationList = req.getSegmentCoordinateList(
+                        nearestStationDepartLocation, nearestStationArriveeLocation,
+                        "cycling-regular");
+                        mainWin.BuildSegment(locationList, Colors.Blue);
+                    }
+                    
+
+                                           
                 } else
                 {
                     labelInfos.Text = "ERROR: lors du calcul d'itinéraire :(\n";
@@ -141,12 +156,10 @@ namespace WindowsFormsClient
 
         private void buildPolygon()
         {
-            //1.43922052825561,43.5677165058716,1.46445685202763,43.6074900232999
             double west_lng = Math.Min(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
             double east_lng = Math.Max(nearestStationDepartLocation.Longitude, nearestStationArriveeLocation.Longitude);
             double south_lat = Math.Min(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
             double north_lat = Math.Max(nearestStationDepartLocation.Latitude, nearestStationArriveeLocation.Latitude);
-
             reqTourism.box = new Box(west_lng, south_lat, east_lng, north_lat);
 
             textBoxDebug.Visible = true;
@@ -163,14 +176,30 @@ namespace WindowsFormsClient
 
             LocationCollection placeLocations = new LocationCollection();
             placeList.ForEach(place => placeLocations.Add(new Location(place.location.Latitude, place.location.Longitude)));
-            mainWin.BuildPushPin(placeList, "green");
+            //mainWin.BuildPushPin(placeList, "green");
 
             LocationCollection tourismItinerary = reqTourism.buildTourismItinerary(
                 new Place(nearestStationDepartLocation, "velibDep"),
                 new Place(nearestStationArriveeLocation, "velibArr"),
-                checkBoxAlternativeRoute.Checked);
+                checkBoxAlternativeRoute.Checked);       
+            mainWin.BuildSegment(tourismItinerary, Colors.LightGreen);
+
+            List<Place> visitedPlaces = new List<Place>();
+            List<Place> nonVisitedPlaces = new List<Place>();
+            foreach (Location loc in tourismItinerary)
+            {
+                int index = placeList.FindIndex(
+                    place =>
+                    place.location.Longitude == loc.Longitude && place.location.Latitude == loc.Latitude);
+                if (index != -1)
+                    visitedPlaces.Add(placeList[index]);
+            }
+
+            nonVisitedPlaces = placeList.Where(p => !visitedPlaces.Contains(p)).ToList<Place>();
+            var coucou = tourismItinerary;
+            mainWin.BuildPushPin(nonVisitedPlaces, Colors.DarkRed, false);
+            mainWin.BuildPushPin(visitedPlaces, Colors.Green, true);
             
-            mainWin.BuildSegment(tourismItinerary, Colors.Green);
             return;
         }
 
@@ -272,3 +301,4 @@ mainWin.BuildPushPin(new LocationCollection {
     new Location(49.41461, 8.681495),
     new Location(49.420318, 8.687872)
 }); */
+//1.43922052825561,43.5677165058716,1.46445685202763,43.6074900232999

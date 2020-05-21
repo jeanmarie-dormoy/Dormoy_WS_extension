@@ -86,7 +86,7 @@ namespace ServiceTourism
         public Place computeNearestPlace(Place velibDep, Boolean alternative)
         {
             Dictionary<Place, Double> dict = new Dictionary<Place, double>();
-            Dictionary<Place, Double> sortedDict;
+            Dictionary<Place, Double> sortedDict; int t;
             if (placeList.Count == 0)
                 return null;
             foreach (Place place in placeList)
@@ -97,6 +97,17 @@ namespace ServiceTourism
             }
 
             sortedDict = dict.OrderBy(i => i.Value).ToDictionary(i => i.Key, i => i.Value);
+
+            if (alternative)
+            {
+                t = 0;
+                foreach (KeyValuePair<Place, Double> entry in sortedDict)
+                {
+                    t++;
+                    if (t == 2)
+                        return entry.Key;
+                }
+            }
 
             foreach (KeyValuePair<Place, Double> entry in sortedDict)
             {
@@ -115,14 +126,11 @@ namespace ServiceTourism
 
         public LocationCollection buildTourismItinerary(Place velibDep, Place velibArr, Boolean alternative)
         {
-            //List<Place> res = new List<Place>();
             RequestY reqy = new RequestY();
             Place nextPlace = velibDep;
             Place oldPlace = null;
             LocationCollection res = new LocationCollection(), temp = new LocationCollection();
             res.Add(velibDep.location);
-            
-            
 
             if (velibArr.location.Longitude < velibDep.location.Longitude)
             {
@@ -136,6 +144,7 @@ namespace ServiceTourism
                     {
                         placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
                         oldPlace = nextPlace;
+                        res.Add(oldPlace.location);
                         nextPlace = computeNearestPlace(nextPlace, alternative);
 
                         if (nextPlace != null)
@@ -150,16 +159,93 @@ namespace ServiceTourism
                         }
                         
                     }
-                    //var coucou = oldPlace.ToString();
+                /*  case:
+                 *      A
+                 *  B   
+                 */
+                } else if (velibArr.location.Latitude < velibDep.location.Latitude)
+                {
+                    while (nextPlace != null)
+                    {
+                        placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
+                        oldPlace = nextPlace;
+                        res.Add(oldPlace.location);
+                        nextPlace = computeNearestPlace(nextPlace, alternative);
+
+                        if (nextPlace != null)
+                        {
+                            temp = reqy.getSegmentCoordinateList(
+                                oldPlace.location, nextPlace.location, "cycling-regular");
+                            foreach (Location loc in temp)
+                                res.Insert(res.Count, loc);
+                            temp.Clear();
+                            box.east_lng = nextPlace.location.Longitude;
+                            box.north_lat = nextPlace.location.Latitude;
+                        }
+
+                    }
+                }    
+            } else if (velibArr.location.Longitude > velibDep.location.Longitude)
+            {
+                /*  case:
+                *      B
+                *  A   
+                */
+                if (velibArr.location.Latitude > velibDep.location.Latitude)
+                {
+                    while (nextPlace != null)
+                    {
+                        placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
+                        oldPlace = nextPlace;
+                        res.Add(oldPlace.location);
+                        nextPlace = computeNearestPlace(nextPlace, alternative);
+                        if (nextPlace != null)
+                        {
+                            temp = reqy.getSegmentCoordinateList(
+                                oldPlace.location, nextPlace.location, "cycling-regular");
+                            foreach (Location loc in temp)
+                                res.Insert(res.Count, loc);
+                            temp.Clear();
+                            box.west_lng = nextPlace.location.Longitude;
+                            box.south_lat = nextPlace.location.Latitude;
+                        }
+                    }
                 }
+                /*  case:
+                *  A    
+                *       B   
+                */
+                else if (velibArr.location.Latitude < velibDep.location.Latitude)
+                {
+                    while (nextPlace != null)
+                    {
+                        placeList = placeList.Where(p => isPlaceInside(p, box)).ToList();
+                        oldPlace = nextPlace;
+                        res.Add(oldPlace.location);
+                        nextPlace = computeNearestPlace(nextPlace, alternative);
+                        if (nextPlace != null)
+                        {
+                            temp = reqy.getSegmentCoordinateList(
+                                oldPlace.location, nextPlace.location, "cycling-regular");
+                            foreach (Location loc in temp)
+                                res.Insert(res.Count, loc);
+                            temp.Clear();
+                            box.west_lng = nextPlace.location.Longitude;
+                            box.north_lat = nextPlace.location.Latitude;
+                        }
+                    }
+                }
+
             }
 
-            temp.Clear();
-            temp = reqy.getSegmentCoordinateList(
-                                oldPlace.location, velibArr.location, "cycling-regular");
-            foreach (Location loc in temp)
-                res.Insert(res.Count, loc);
-
+            if (oldPlace != null)
+            {
+                temp.Clear();
+                temp = reqy.getSegmentCoordinateList(
+                                    oldPlace.location, velibArr.location, "cycling-regular");
+                foreach (Location loc in temp)
+                    res.Insert(res.Count, loc);
+            }
 
             return res;
         }
